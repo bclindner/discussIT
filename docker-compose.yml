@@ -1,0 +1,30 @@
+version: '3'
+services:
+  web:
+    build: .
+    container_name: discussIT_web
+    restart: always
+    volumes:
+      - ./src/:/var/www/html
+    ports:
+      - 8000:80
+    networks:
+      - world
+      - db
+    depends_on:
+      - mariadb
+  mariadb:
+    image: mariadb:latest
+    container_name: discussIT_db
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: "testuser"
+      MYSQL_PASSWORD: "testpassword"
+      MYSQL_DATABASE: "discussIT"
+    networks:
+      - db
+networks:
+  world:
+  db:
+    internal: true
